@@ -3,6 +3,7 @@ import java.io.*;
 public class Main {
     public static void main(String[] args) {
         // Write a file options:
+
         // FileWriter = good for small/med text files
         // BufferedWriter = good for large text files
         // PrintWriter = good for writing formatted text (structured data, reports, logs)
@@ -32,13 +33,14 @@ public class Main {
         }
 
         // Read a file options:
+
         // BufferedReader + FileReader = good for large text files line by line
         // Scanner = good for parsing formatted text (structured data, reports, logs)
         // FileInputStream = good for reading binary data (images, audio, video)
         // DataInputStream = good for reading primitive data types
         // RandomAccessFile = good for reading from a specific location in a file
 
-        String readFilePath = "haiku.txt";
+        String readFilePath = "example.txt";
         try {
             BufferedReader reader = new BufferedReader(new FileReader(readFilePath));
             String line = reader.readLine();
@@ -53,7 +55,27 @@ public class Main {
             System.out.println("Could not read file.");
         }
 
+        // Copy a csv file to a text file
+        String csvPath = "CPIHistoricalForecast.csv";
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(csvPath));
+            FileWriter forecastWriter = new FileWriter("CPIforecast.txt");
+            String dataLine;
+            while((dataLine = br.readLine()) != null) {
+                if(dataLine.isEmpty()) {
+                    break;
+                }
+                forecastWriter.write(dataLine + "\n");
+            }
+            forecastWriter.close();
+            br.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found.");
 
-
+        } catch (IOException e) {
+            System.out.println("Could not read file.");
+        } finally {
+            System.out.println("File copied successfully.");
+        }
     }
 }
