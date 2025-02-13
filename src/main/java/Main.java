@@ -1,4 +1,12 @@
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class Main {
     public static void main(String[] args) {
@@ -23,11 +31,9 @@ public class Main {
                     """);
             System.out.println("File written successfully.");
             writer.close();
-        }
-        catch(FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.out.println("File location not found.");
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("Could not write file.");
 
         }
@@ -50,8 +56,7 @@ public class Main {
             }
         } catch (FileNotFoundException e) {
             System.out.println("File not found.");
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("Could not read file.");
         }
 
@@ -59,10 +64,10 @@ public class Main {
         String csvPath = "CPIHistoricalForecast.csv";
         try {
             BufferedReader br = new BufferedReader(new FileReader(csvPath));
-            FileWriter forecastWriter = new FileWriter("CPIforecast.txt");
+            FileWriter forecastWriter = new FileWriter("CPIForecast.txt");
             String dataLine;
-            while((dataLine = br.readLine()) != null) {
-                if(dataLine.isEmpty()) {
+            while ((dataLine = br.readLine()) != null) {
+                if (dataLine.isEmpty()) {
                     break;
                 }
                 forecastWriter.write(dataLine + "\n");
@@ -76,6 +81,49 @@ public class Main {
             System.out.println("Could not read file.");
         } finally {
             System.out.println("File copied successfully.");
+        }
+
+//        Create an Excel workbook
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet();
+        List<FootballPlayer> players = new ArrayList<>(
+                List.of(
+                        new FootballPlayer("Lionel Messi", 34, 672, 778, "Paris Saint-Germain", "League 1"),
+                        new FootballPlayer("Cristiano Ronaldo", 36, 674, 897, "Manchester United", "Premier League"),
+                        new FootballPlayer("Neymar Jr.", 29, 258, 373, "Paris Saint-Germain", "League 1")
+                )
+        );
+
+
+
+        int rowNumber = 0;
+
+        for (FootballPlayer player : players) {
+            Row row = sheet.createRow(rowNumber++);
+            int columnNumber = 0;
+            Cell nameCell = row.createCell(columnNumber);
+            Cell ageCell = row.createCell(++columnNumber);
+            Cell goalsCell = row.createCell(++columnNumber);
+            Cell gamesCell = row.createCell(++columnNumber);
+            Cell teamCell = row.createCell(++columnNumber);
+            Cell leagueCell = row.createCell(++columnNumber);
+
+            nameCell.setCellValue(player.getName());
+            ageCell.setCellValue(player.getAge());
+            goalsCell.setCellValue(player.getGoals());
+            gamesCell.setCellValue(player.getGames());
+            teamCell.setCellValue(player.getTeam());
+            leagueCell.setCellValue(player.getLeague());
+        }
+
+        try (FileOutputStream outputStream = new FileOutputStream("./playerWorkbook.xlsx")) {
+            workbook.write(outputStream);
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found.");
+        } catch (IOException e) {
+            System.out.println("Could not write file.");
+        } finally {
+            System.out.println("Excel file created successfully.");
         }
     }
 }
