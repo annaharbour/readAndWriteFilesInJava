@@ -36,3 +36,8 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+#Output files
+books.xlsx
+CPIforecast.txt
+example.txt

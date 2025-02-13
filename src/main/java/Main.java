@@ -82,48 +82,6 @@ public class Main {
         } finally {
             System.out.println("File copied successfully.");
         }
-
-//        Create an Excel workbook
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet sheet = workbook.createSheet();
-        List<FootballPlayer> players = new ArrayList<>(
-                List.of(
-                        new FootballPlayer("Lionel Messi", 34, 672, 778, "Paris Saint-Germain", "League 1"),
-                        new FootballPlayer("Cristiano Ronaldo", 36, 674, 897, "Manchester United", "Premier League"),
-                        new FootballPlayer("Neymar Jr.", 29, 258, 373, "Paris Saint-Germain", "League 1")
-                )
-        );
-
-
-
-        int rowNumber = 0;
-
-        for (FootballPlayer player : players) {
-            Row row = sheet.createRow(rowNumber++);
-            int columnNumber = 0;
-            Cell nameCell = row.createCell(columnNumber);
-            Cell ageCell = row.createCell(++columnNumber);
-            Cell goalsCell = row.createCell(++columnNumber);
-            Cell gamesCell = row.createCell(++columnNumber);
-            Cell teamCell = row.createCell(++columnNumber);
-            Cell leagueCell = row.createCell(++columnNumber);
-
-            nameCell.setCellValue(player.getName());
-            ageCell.setCellValue(player.getAge());
-            goalsCell.setCellValue(player.getGoals());
-            gamesCell.setCellValue(player.getGames());
-            teamCell.setCellValue(player.getTeam());
-            leagueCell.setCellValue(player.getLeague());
-        }
-
-        try (FileOutputStream outputStream = new FileOutputStream("./playerWorkbook.xlsx")) {
-            workbook.write(outputStream);
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found.");
-        } catch (IOException e) {
-            System.out.println("Could not write file.");
-        } finally {
-            System.out.println("Excel file created successfully.");
-        }
     }
+
 }
